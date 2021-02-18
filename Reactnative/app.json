@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "dp",
-    "slug": "dp",
+    "name": "medic",
+    "slug": "medic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

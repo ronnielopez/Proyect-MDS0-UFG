@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Categorias
+        Suscripciones
       </h2>
     </template>
   <div v-if="$page.props.user.role === 'administrador'">
@@ -10,13 +10,13 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
           <div class="row py-3 container">
-            <div class="col s12 text-right">
+            <div class="col s12 text-right" v-if="contador != 3">
               <a
                 type="button"
                 class="btn btn-primary"
                 data-toggle="modal"
                 data-target="#crearModal"
-                >Crear categoria</a
+                >Crear suscripcion</a
               >
             </div>
           </div>
@@ -26,28 +26,33 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombres</th>
-                    <th scope="col"></th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Subtitulo</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Descripcion</th>
                     <th scope="col" class="text-center">Accion</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(categoria, index) in categorias" :key="index">
-                    <td scope="row">{{ categoria.id }}</td>
-                    <td colspan="2">{{ categoria.nombre }}</td>
+                  <tr v-for="(suscripcion, index) in suscripciones" :key="index">
+                    <td scope="row">{{ suscripcion.id }}</td>
+                    <td>{{ suscripcion.nombre }}</td>
+                    <td>{{ suscripcion.subtitulo }}</td>
+                    <td>{{ suscripcion.precio }}</td>
+                    <td>{{ suscripcion.descripcion }}</td>
                     <td class="text-center">
                       <a
                         type="button"
                         class="btn btn-info mr-4"
                         data-toggle="modal"
                         data-target="#editarModal"
-                        @click="selectedCategoria(categoria)"
+                        @click="selectedSuscripcion(suscripcion)"
                         >Editar</a
                       >
                       <a
                         type="button"
                         class="btn btn-danger"
-                        @click="selectedCategoria(categoria); confirmDelete();"
+                        @click="selectedSuscripcion(suscripcion); confirmDelete();"
                         >Eliminar</a
                       >
                     </td>
@@ -73,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Crear una nueva categoria
+              Crear una nueva suscripcion
             </h5>
             <button
               type="button"
@@ -85,18 +90,46 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="crearForm" @submit.prevent="addCategorias">
+            <form id="crearForm" @submit.prevent="addSuscripcion">
               <div class="form-group">
-                <label for="nombre">Nombre de la categoria</label>
+                <label for="nombre">Nombre de la suscripcion</label>
                 <input
                   type="text"
-                  v-model="categoria.nombre"
+                  v-model="suscripcion.nombre"
                   class="form-control"
                   id="nombre"
-                  placeholder="Categoria"
+                  placeholder="Suscripcion"
                 />
               </div>
-              <button type="submit" class="btn btn-primary">Crear</button>
+              <div class="form-group">
+                <label for="sub">Subtitulo de la suscripcion</label>
+                <input
+                  type="text"
+                  v-model="suscripcion.subtitulo"
+                  class="form-control"
+                  id="sub"
+                  placeholder="Subtitulo"
+                />
+              </div>
+              <div class="form-group">
+                <label for="precio">Precio</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  v-model="suscripcion.precio"
+                  class="form-control"
+                  id="precio"
+                  placeholder="precio"
+                />
+              </div>
+              <div class="form-group">
+                <label for="descripcion">Descripcion</label>
+                <textarea class="form-control" 
+                id="descripcion" 
+                v-model="suscripcion.descripcion" 
+                rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Crear suscripcion</button>
             </form>
           </div>
         </div>
@@ -117,7 +150,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Modificar una categoria
+              Modificar una suscripcion
             </h5>
             <button
               type="button"
@@ -129,18 +162,46 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="editarForm" @submit.prevent="editCategorias">
+            <form id="editarForm" @submit.prevent="editSuscripciones">
               <div class="form-group">
-                <label for="nombre">Nombre de la categoria</label>
+                <label for="nombre">Nombre de la suscripcion</label>
                 <input
                   type="text"
-                  v-model="slcCategoria.nombre"
+                  v-model="slcSuscripcion.nombre"
                   class="form-control"
                   id="nombre"
-                  placeholder="Categoria"
+                  placeholder="Suscripcion"
                 />
               </div>
-              <button type="submit" class="btn btn-warning">Editar</button>
+              <div class="form-group">
+                <label for="sub">Subtitulo de la suscripcion</label>
+                <input
+                  type="text"
+                  v-model="slcSuscripcion.subtitulo"
+                  class="form-control"
+                  id="sub"
+                  placeholder="Subtitulo"
+                />
+              </div>
+              <div class="form-group">
+                <label for="precio">Precio</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  v-model="slcSuscripcion.precio"
+                  class="form-control"
+                  id="precio"
+                  placeholder="precio"
+                />
+              </div>
+              <div class="form-group">
+                <label for="descripcion">Descripcion</label>
+                <textarea class="form-control" 
+                id="descripcion" 
+                v-model="slcSuscripcion.descripcion" 
+                rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-warning">Editar suscripcion</button>
             </form>
           </div>
         </div>
@@ -163,21 +224,26 @@ export default {
   },
   data() {
     return {
-      categorias: [],
-      categoria: {
+      suscripciones: [],
+      contador: 0 ,
+      suscripcion: {
         nombre: "",
+        subtitulo:"",
+        precio:"",
+        descripcion:""
       },
-      slcCategoria: {},
+      slcSuscripcion: {},
     };
   },
   methods: {
-    async getCategorias() {
-      const { data } = await axios.get("api/categoria");
-      this.categorias = data;
+    async getSuscripciones() {
+      const { data } = await axios.get("api/suscripcion");
+      this.suscripciones = data;
+      this.contador = this.suscripciones.length;
     },
 
-    async addCategorias() {
-      const res = await axios.post("api/categoria", this.categoria);
+    async addSuscripcion() {
+      const res = await axios.post("api/suscripcion", this.suscripcion);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -186,13 +252,13 @@ export default {
 
         document.getElementById("crearForm").reset();
         $("#crearModal").modal("hide");
-        this.getCategorias();
-        this.categoria = {};
+        this.getSuscripciones();
+        this.suscripcion = {};
       }
     },
 
-    async editCategorias() {
-      const res = await axios.put("api/categoria/"+this.slcCategoria.id, this.slcCategoria);
+    async editSuscripciones() {
+      const res = await axios.put("api/suscripcion/"+this.slcSuscripcion.id, this.slcSuscripcion);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -201,13 +267,13 @@ export default {
 
         document.getElementById("editarForm").reset();
         $("#editarModal").modal("hide");
-        this.getCategorias();
-        this.categoria = {};
+        this.getSuscripciones();
+        this.suscripcion = {};
       }
     },
 
-    async deleteCategorias() {
-      const res = await axios.delete("api/categoria/"+this.slcCategoria.id);
+    async deleteSuscripcion() {
+      const res = await axios.delete("api/suscripcion/"+this.slcSuscripcion.id);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -216,9 +282,9 @@ export default {
       }
     },
 
-    selectedCategoria(categoria){
-      let notReactive = JSON.stringify(categoria);
-      this.slcCategoria = JSON.parse(notReactive);
+    selectedSuscripcion(suscripcion){
+      let notReactive = JSON.stringify(suscripcion);
+      this.slcSuscripcion = JSON.parse(notReactive);
     },
 
     confirmDelete: function(){
@@ -231,14 +297,14 @@ export default {
         cancelButtonText: 'Cancelar'
       }).then((result)=> {
           if (result.isConfirmed) {
-            this.deleteCategorias();
-            this.getCategorias();
+            this.deleteSuscripcion();
+            this.getSuscripciones();
           }
       });
     }
   },
   created() {
-    this.getCategorias();
+    this.getSuscripciones();
   },
 };
 </script>

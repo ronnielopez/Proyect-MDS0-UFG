@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\Categoriascontroller;
+use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\SuscripcionesController;
+use App\Http\Controllers\ComercioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +19,7 @@ use App\Http\Controllers\Categoriascontroller;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Auth/Login');
 });
 
 Route::middleware(['auth:sanctum', 'verified'] )->get('/dashboard', function () {
@@ -33,5 +30,19 @@ Route::middleware(['auth:sanctum', 'verified'] )->get('/categorias', function ()
     return Inertia::render('Categories/CategoriesView');
 })->name('categorias');
 
+Route::resource('categoria', CategoriasController::class)
+    ->middleware(['auth:sanctum', 'verified']);
 
-Route::middleware('auth:sanctum')->get('/categorias/all' , [Categoriascontroller::class, 'categorias']);
+Route::middleware(['auth:sanctum', 'verified'] )->get('/suscripciones', function () {
+    return Inertia::render('Suscripciones/SuscripcionesView');
+})->name('suscripciones');
+    
+Route::resource('suscripcion', SuscripcionesController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::middleware(['auth:sanctum', 'verified'] )->get('/comercio', function () {
+    return Inertia::render('Comercios/ComercioView');
+})->name('comercio');
+        
+Route::resource('comercios', ComercioController::class)
+    ->middleware(['auth:sanctum', 'verified']);

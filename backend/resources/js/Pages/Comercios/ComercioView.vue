@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Categorias
+        Comercios
       </h2>
     </template>
   <div v-if="$page.props.user.role === 'administrador'">
@@ -16,7 +16,7 @@
                 class="btn btn-primary"
                 data-toggle="modal"
                 data-target="#crearModal"
-                >Crear categoria</a
+                >Crear comercio</a
               >
             </div>
           </div>
@@ -26,28 +26,33 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombres</th>
-                    <th scope="col"></th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Rubro</th>
                     <th scope="col" class="text-center">Accion</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(categoria, index) in categorias" :key="index">
-                    <td scope="row">{{ categoria.id }}</td>
-                    <td colspan="2">{{ categoria.nombre }}</td>
+                  <tr v-for="(comercio, index) in comercios" :key="index">
+                    <td scope="row">{{ comercio.id }}</td>
+                    <td>{{ comercio.nombre }}</td>
+                    <td>{{ comercio.direccion }}</td>
+                    <td>{{ comercio.telefono }}</td>
+                    <td>{{ comercio.rubro }}</td>
                     <td class="text-center">
                       <a
                         type="button"
                         class="btn btn-info mr-4"
                         data-toggle="modal"
                         data-target="#editarModal"
-                        @click="selectedCategoria(categoria)"
+                        @click="selectedComercio(comercio)"
                         >Editar</a
                       >
                       <a
                         type="button"
                         class="btn btn-danger"
-                        @click="selectedCategoria(categoria); confirmDelete();"
+                        @click="selectedComercio(comercio); confirmDelete();"
                         >Eliminar</a
                       >
                     </td>
@@ -73,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Crear una nueva categoria
+              Crear un nuevo comercio
             </h5>
             <button
               type="button"
@@ -85,18 +90,48 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="crearForm" @submit.prevent="addCategorias">
+            <form id="crearForm" @submit.prevent="addComercio">
               <div class="form-group">
-                <label for="nombre">Nombre de la categoria</label>
+                <label for="nombre">Nombre del comercio</label>
                 <input
                   type="text"
-                  v-model="categoria.nombre"
+                  v-model="comercio.nombre"
                   class="form-control"
                   id="nombre"
-                  placeholder="Categoria"
+                  placeholder="Comercio"
                 />
               </div>
-              <button type="submit" class="btn btn-primary">Crear</button>
+              <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <input
+                  type="text"
+                  v-model="comercio.direccion"
+                  class="form-control"
+                  id="direccion"
+                  placeholder="Direccion"
+                />
+              </div>
+              <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input
+                  type="text"
+                  v-model="comercio.telefono"
+                  class="form-control"
+                  id="telefono"
+                  placeholder="Telefono"
+                />
+              </div>
+              <div class="form-group">
+                <label for="rubro">Rubro</label>
+                <input
+                  type="text"
+                  v-model="comercio.rubro"
+                  class="form-control"
+                  id="rubro"
+                  placeholder="Rubro"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Crear comercio</button>
             </form>
           </div>
         </div>
@@ -129,18 +164,48 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="editarForm" @submit.prevent="editCategorias">
+            <form id="editarForm" @submit.prevent="editComercio">
               <div class="form-group">
-                <label for="nombre">Nombre de la categoria</label>
+                <label for="nombre">Nombre del comercio</label>
                 <input
                   type="text"
-                  v-model="slcCategoria.nombre"
+                  v-model="slcComercio.nombre"
                   class="form-control"
                   id="nombre"
-                  placeholder="Categoria"
+                  placeholder="Comercio"
                 />
               </div>
-              <button type="submit" class="btn btn-warning">Editar</button>
+              <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <input
+                  type="text"
+                  v-model="slcComercio.direccion"
+                  class="form-control"
+                  id="direccion"
+                  placeholder="Direccion"
+                />
+              </div>
+              <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input
+                  type="text"
+                  v-model="slcComercio.telefono"
+                  class="form-control"
+                  id="telefono"
+                  placeholder="Telefono"
+                />
+              </div>
+              <div class="form-group">
+                <label for="rubro">Rubro</label>
+                <input
+                  type="text"
+                  v-model="slcComercio.rubro"
+                  class="form-control"
+                  id="rubro"
+                  placeholder="Rubro"
+                />
+              </div>
+              <button type="submit" class="btn btn-warning">Editar Comercio</button>
             </form>
           </div>
         </div>
@@ -163,21 +228,24 @@ export default {
   },
   data() {
     return {
-      categorias: [],
-      categoria: {
+      comercios: [],
+      comercio: {
         nombre: "",
+        direccion:"",
+        telefono:"",
+        rubro:""
       },
-      slcCategoria: {},
+      slcComercio: {},
     };
   },
   methods: {
-    async getCategorias() {
-      const { data } = await axios.get("api/categoria");
-      this.categorias = data;
+    async getComercio() {
+      const { data } = await axios.get("api/comercio");
+      this.comercios = data;
     },
 
-    async addCategorias() {
-      const res = await axios.post("api/categoria", this.categoria);
+    async addComercio() {
+      const res = await axios.post("api/comercio", this.comercio);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -186,13 +254,13 @@ export default {
 
         document.getElementById("crearForm").reset();
         $("#crearModal").modal("hide");
-        this.getCategorias();
-        this.categoria = {};
+        this.getComercio();
+        this.comercio = {};
       }
     },
 
-    async editCategorias() {
-      const res = await axios.put("api/categoria/"+this.slcCategoria.id, this.slcCategoria);
+    async editComercio() {
+      const res = await axios.put("api/comercio/"+this.slcComercio.id, this.slcComercio);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -201,13 +269,13 @@ export default {
 
         document.getElementById("editarForm").reset();
         $("#editarModal").modal("hide");
-        this.getCategorias();
-        this.categoria = {};
+        this.getComercio();
+        this.comercio = {};
       }
     },
 
-    async deleteCategorias() {
-      const res = await axios.delete("api/categoria/"+this.slcCategoria.id);
+    async deleteComercio() {
+      const res = await axios.delete("api/comercio/"+this.slcComercio.id);
       if (res.status === 201) {
         Toast.fire({
           icon: "success",
@@ -216,9 +284,9 @@ export default {
       }
     },
 
-    selectedCategoria(categoria){
-      let notReactive = JSON.stringify(categoria);
-      this.slcCategoria = JSON.parse(notReactive);
+    selectedComercio(comercio){
+      let notReactive = JSON.stringify(comercio);
+      this.slcComercio = JSON.parse(notReactive);
     },
 
     confirmDelete: function(){
@@ -231,14 +299,14 @@ export default {
         cancelButtonText: 'Cancelar'
       }).then((result)=> {
           if (result.isConfirmed) {
-            this.deleteCategorias();
-            this.getCategorias();
+            this.deleteComercio();
+            this.getComercio();
           }
       });
     }
   },
   created() {
-    this.getCategorias();
+    this.getComercio();
   },
 };
 </script>

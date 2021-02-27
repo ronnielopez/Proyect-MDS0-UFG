@@ -1,23 +1,35 @@
-import React, {Component, components} from 'react';
-import {StyleSheet} from 'react-native';
+import React from 'react'
+import { StyleSheet, Button, View, Text } from 'react-native'
+import { StatusBar } from 'expo-status-bar';
 
-import {Button, Block, Text} from '../components';
+const Welcome = ({navigation}) => {
+    return (
+        <View style={styles.container}>
+            <Text>Bienvenidos es un gusto tenerlos</Text>
+            <Button
+             title="Ingresar"
+             onPress={() =>
+             navigation.navigate('Login', { name: 'Ingresar' })}
+              /> 
+              
+              <Button
+             title="Registrar"
+             onPress={() =>
+             navigation.navigate('Singup', { name: 'Registrar' })}
+              /> 
+              
+              <StatusBar style="auto" />
+        </View>
+    );
+};
 
-export default class Welcom extends Component{
-    static navigationOptions = {
-        header: null,
-    }
-    render(){
-        return(
-            <Block center middle>
-                <Block center middle flex={0.3}>
-                    <text h1 center bold> Alpha 
-                    <text h1 primary> Medic </text></text>
-                </Block>
-                <text>
+export default Welcome;
 
-                </text>
-            </Block>
-        )
-    }
-}
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'gold',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });

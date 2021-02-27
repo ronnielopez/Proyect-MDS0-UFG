@@ -5,11 +5,11 @@ import { StatusBar } from 'expo-status-bar';
 const Login = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <Text>Prueba de login pasar a Registrar</Text>
+            <Text>Login</Text>
             <Button
-             title="Registar"
+             title="Ingresar"
              onPress={() =>
-             navigation.navigate('Singup', { name: 'rehistrar' })}
+             navigation.navigate('Menu', { name: 'menu' })}
               /> 
             
             <StatusBar style="auto" />

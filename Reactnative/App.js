@@ -1,8 +1,8 @@
 import React from 'react';
-import navigation1 from './Navigation/Surf'
+import Navigate from './navigation/Navigate'
 
 
 export default function App() {
-  return <navigation1 />
+  return <Navigate />
 }
 

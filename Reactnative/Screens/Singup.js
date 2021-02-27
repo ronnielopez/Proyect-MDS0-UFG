@@ -1,14 +1,21 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Button} from 'react-native'
+import { StatusBar } from 'expo-status-bar';
 
 const Singup = () => {
     return (
         <View>
-            <Text>
-                hola esto es una prueba
+            <Text>Prueba de singup
             </Text>
+            <Button
+             title="Ingresar"
+             onPress={() =>
+             this.props.navigation.navigate('Login', { name: 'Ingresar' })}
+              /> 
+            
+            <StatusBar style="auto" />
         </View>
-    )
-}
+    );
+};
 
 export default Singup

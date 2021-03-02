@@ -3,10 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 
-import Login from '../screens/Login';
-import Singup from '../screens/Singup';
-import Menu from '../screens/Menu';
 import Welcome from "../screens/Welcome";
+import Ingresar from '../screens/Ingresar';
+import Registrate from '../screens/Registrate';
+import Menu from '../screens/Menu';
+
 
 
 const Stack = createStackNavigator();
@@ -15,21 +16,19 @@ const Navigate = () => {
     return (
     <NavigationContainer>
       <Stack.Navigator>
-
-        <Stack.Screen
+      <Stack.Screen center
           name="Bienvenidos"
           component={Welcome}
-          options={{ title: 'Bienvenidos' }}
         />
 
-        <Stack.Screen
+        <Stack.Screen center
           name="Ingresar"
-          component={Login}
+          component={Ingresar}
         />
 
         <Stack.Screen
-         name="Registrar" 
-         component={Singup} 
+         name="Registrate" 
+         component={Registrate} 
          />
          
          <Stack.Screen

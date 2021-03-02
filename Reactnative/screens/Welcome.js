@@ -1,35 +1,39 @@
-import React from 'react'
-import { StyleSheet, Button, View, Text } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
+import React, { Component } from 'react'
+import { View, StyleSheet, Button } from 'react-native'
+import { block } from 'react-native-reanimated';
 
-const Welcome = ({navigation}) => {
+export class Welcome extends Component {
+  render() {
     return (
-        <View style={styles.container}>
-            <Text>Bienvenidos es un gusto tenerlos</Text>
-            <Button
+      <View style={styles.container}>
+        <View style={styles.boxcontainer}>
+        <h1>Bienvenidos</h1>
+        <Button color='#45FF82' style={styles.button1}
              title="Ingresar"
              onPress={() =>
-             navigation.navigate('Login', { name: 'Ingresar' })}
-              /> 
-              
-              <Button
-             title="Registrar"
+             this.props.navigation.navigate('Ingresar', { name: 'Ingresar' })}
+         />
+         <br/>
+        <Button color='red' style={styles.button2}
+             title="Registrate"
              onPress={() =>
-             navigation.navigate('Singup', { name: 'Registrar' })}
-              /> 
-              
-              <StatusBar style="auto" />
-        </View>
-    );
-};
+             this.props.navigation.navigate('Registrate', { name: 'Registrate' })}
+         />
+      </View>
+      </View>
+    )
+  }
+}
+
 
 export default Welcome;
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'gold',
+      backgroundColor: 'white',
       alignItems: 'center',
       justifyContent: 'center',
     },
+    
   });

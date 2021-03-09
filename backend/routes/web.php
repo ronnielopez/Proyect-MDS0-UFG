@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\SuscripcionesController;
 use App\Http\Controllers\ComercioController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +46,11 @@ Route::middleware(['auth:sanctum', 'verified'] )->get('/comercio', function () {
 })->name('comercio');
         
 Route::resource('comercios', ComercioController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::middleware(['auth:sanctum', 'verified'] )->get('/usuarios', function () {
+    return Inertia::render('Usuarios/UsuariosView');
+})->name('usuarios');
+
+Route::resource('usuario', UserController::class)
     ->middleware(['auth:sanctum', 'verified']);
